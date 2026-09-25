@@ -1,7 +1,5 @@
 require('dotenv').config();
 const http = require('http');
-const fs = require('fs');
-const path = require('path');
 const { createClient } = require('@supabase/supabase-js');
 
 const supabase = createClient(
@@ -10,7 +8,11 @@ const supabase = createClient(
 );
 
 const PORT = process.env.PORT || 3000;
-const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN || '*';
+const ALLOWED_ORIGINS = [
+  'http://127.0.0.1:5500',
+  'http://localhost:5500',
+  'https://projeto-quiz-backend-88ne.onrender.com'
+];
 
 function enviarJSON(res, status, payload) {
   res.writeHead(status, {
@@ -18,39 +20,6 @@ function enviarJSON(res, status, payload) {
     'Access-Control-Allow-Origin': ALLOWED_ORIGIN
   });
   res.end(JSON.stringify(payload));
-}
-
-const PUBLIC_DIR = path.join(__dirname, 'public');
-
-const MIME_TYPES = {
-  '.html': 'text/html; charset=utf-8',
-  '.css': 'text/css; charset=utf-8',
-  '.js': 'application/javascript; charset=utf-8',
-  '.json': 'application/json; charset=utf-8',
-  '.svg': 'image/svg+xml',
-  '.png': 'image/png',
-  '.jpg': 'image/jpeg',
-  '.ico': 'image/x-icon'
-};
-
-// Serve os arquivos da pasta public (o frontend). "/" cai em index.html.
-function servirArquivoEstatico(res, pathname) {
-  const caminhoRelativo = pathname === '/' ? '/index.html' : pathname;
-  const caminhoArquivo = path.join(PUBLIC_DIR, caminhoRelativo);
-
-  // Impede sair da pasta public (ex.: "/../server.js")
-  if (!caminhoArquivo.startsWith(PUBLIC_DIR)) {
-    return enviarJSON(res, 403, { erro: 'Acesso negado.' });
-  }
-
-  fs.readFile(caminhoArquivo, (err, conteudo) => {
-    if (err) {
-      return enviarJSON(res, 404, { erro: 'Rota não encontrada.' });
-    }
-    const ext = path.extname(caminhoArquivo);
-    res.writeHead(200, { 'Content-Type': MIME_TYPES[ext] || 'application/octet-stream' });
-    res.end(conteudo);
-  });
 }
 
 const server = http.createServer(async (req, res) => {
@@ -94,11 +63,6 @@ const server = http.createServer(async (req, res) => {
       if (error) throw error;
       const categorias = [...new Set(data.map((q) => q.categoria))];
       return enviarJSON(res, 200, categorias);
-    }
-
-    // Qualquer rota que não seja da API tenta servir um arquivo da pasta public
-    if (!pathname.startsWith('/api/')) {
-      return servirArquivoEstatico(res, pathname);
     }
 
     return enviarJSON(res, 404, { erro: 'Rota não encontrada.' });
