@@ -1,5 +1,5 @@
 // Troque para a URL do Render quando o backend estiver publicado
-const API_BASE_URL = 'http://localhost:3000';
+const API_BASE_URL = 'https://projeto-quiz-backend-88ne.onrender.com';
 
 async function carregarCategorias() {
   const res = await fetch(`${API_BASE_URL}/api/categories`);
