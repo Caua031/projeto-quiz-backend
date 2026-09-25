@@ -8,11 +8,7 @@ const supabase = createClient(
 );
 
 const PORT = process.env.PORT || 3000;
-const ALLOWED_ORIGINS = [
-  'http://127.0.0.1:5500',
-  'http://localhost:5500',
-  'https://projeto-quiz-backend-88ne.onrender.com'
-];
+const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN || '*';
 
 function enviarJSON(res, status, payload) {
   res.writeHead(status, {
