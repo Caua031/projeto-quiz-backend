@@ -1,0 +1,54 @@
+body {
+  font-family: system-ui, sans-serif;
+  max-width: 640px;
+  margin: 40px auto;
+  padding: 0 16px;
+  color: #171A1C;
+}
+
+h1 {
+  font-size: 1.4rem;
+}
+
+select {
+  margin-bottom: 16px;
+  padding: 6px;
+}
+
+.card {
+  border: 1px solid #D7DBD6;
+  border-radius: 6px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.card h3 {
+  margin: 0 0 8px;
+  font-size: 1rem;
+}
+
+.meta {
+  font-size: 0.8rem;
+  color: #54595C;
+  margin-bottom: 10px;
+}
+
+button {
+  cursor: pointer;
+  border: 1px solid #171A1C;
+  background: #fff;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+
+.resposta {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed #D7DBD6;
+  display: none;
+}
+
+.resposta.show {
+  display: block;
+}
